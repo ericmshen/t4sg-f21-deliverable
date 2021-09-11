@@ -8,6 +8,8 @@ import CaseCategory from "./CaseCategory";
 import AddCaseModal from "./Modals/AddCaseModal";
 import { useQuery } from "urql";
 import AddCategoryModal from "./Modals/AddCategoryModal";
+import Image from 'next/image'
+import { Category } from "@material-ui/icons";
 
 /* 
   FEATURE 1 TODO:
@@ -16,14 +18,16 @@ import AddCategoryModal from "./Modals/AddCategoryModal";
   works in Hasura, and then paste the query here.
 
   Make sure to replace the string that is currently
-  in this variable 
+  in this variable.
 */
 export const ManagementContainerQuery = `
-query MyQuery {
-  __typename 
+query GetCategories {
+  category {
+    id
+    name
+  } 
 }
 `;
-// END TODO
 
 export type ManagementCategory = {
   id: number;
@@ -36,14 +40,35 @@ const CaseManagementContainer: React.FC = (props) => {
   const [addCategoryModalOpen, setAddCategoryModalOpen] =
     React.useState<boolean>(false);
 
-  /* NOTE: This uses */
+  /* NOTE: This uses the query defined above in feature 1. */
   const [{ data, fetching, error }, executeQuery] = useQuery({
     query: ManagementContainerQuery,
   });
 
+  // const categories: ManagementCategory[] | null = data ? data?.category : null;
+
+  if(error) {
+    console.log(error);
+  }
+
   return (
     <>
-      <h5 className="title">Home Page</h5>
+      <div style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "1em",
+        }}>
+        <Image
+          src="/../public/t4sg_logo.png"
+          alt="T4SG Logo"
+          width={180}
+          height={68}
+        />
+      </div>
+      <h4 className="title">Home Page</h4>
+      <br></br>
+
+      {/* CaseCategories */}
       <Grid container spacing={3}>
         {/*
           FEATURE 1 TODO:
@@ -52,9 +77,23 @@ const CaseManagementContainer: React.FC = (props) => {
           Remember, the response is stored in the "data" variable!
         */}
 
-        {/* END TODO */}
+        <div>
+        {fetching ? <p style={{marginLeft: "46vw"}}>Getting your data...</p> : error ? "There was an error" + error.message : data ? data?.category.map((c : any) => {
+          <Grid item xs={4}>
+            <CaseCategory category_id={c.id}></CaseCategory>
+          </Grid>
+        }) : "Something went wrong"}
+        </div>
+
+        {/* {categories?.map((c) => {
+          <Grid item xs={4}>
+            <CaseCategory category_id={c.id}></CaseCategory>
+          </Grid>
+        })} */}
+
       </Grid>
 
+      {/* Popup modals for adding cases/categories */}
       <AddCaseModal
         onClose={() => setAddCaseModalOpen(false)}
         open={addCaseModalOpen}
@@ -65,29 +104,33 @@ const CaseManagementContainer: React.FC = (props) => {
         open={addCategoryModalOpen}
       />
 
+      {/* Commands */}
       <Container
         style={{
           width: "100%",
           borderStyle: "solid",
           padding: "0.75rem",
           marginTop: "0.75rem",
+          display: "flex",
+          justifyContent: "space-around",
         }}
       >
-        <Button variant="dark" onClick={() => setAddCategoryModalOpen(true)}>
+        <Button variant="outline-dark" onClick={() => setAddCategoryModalOpen(true)}>
           Add Category
         </Button>
-        <Button variant="dark" onClick={() => "redirect"}>
+        <Button variant="outline-dark" onClick={() => "redirect"}>
           Delete Category
         </Button>
-        <Button variant="dark" onClick={() => setAddCaseModalOpen(true)}>
+        <Button variant="outline-dark" onClick={() => setAddCaseModalOpen(true)}>
           Add Case
         </Button>
-        <Button variant="dark" onClick={() => "redirect"}>
+        <Button variant="outline-dark" onClick={() => "redirect"}>
           Delete Case
         </Button>
-        <Button variant="dark" onClick={() => "redirect"}>
+        <Button variant="outline-dark" onClick={() => "redirect"}>
           Edit Case
         </Button>
+      <Footer />
       </Container>
     </>
   );
