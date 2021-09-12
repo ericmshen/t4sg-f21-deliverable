@@ -58,11 +58,11 @@ const AddCategoryModal: React.FC<AddCaseModalProps> = (props) => {
   return (
     <div>
       {showAlert ?
-      <Alert variant="success" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
+      <Alert variant="success" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", left: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
         <Alert.Heading>Successfully added category!</Alert.Heading>
         <CloseIcon style={{width: "30px", height: "30px", cursor: "pointer"}} onClick={() => setShowAlert(false)}/>
       </Alert>
-    : <div></div> }
+    : null }
     <StyledModal open={props.open} onClose={props.onClose}>
       <Typography variant="h4" align="center">
         Add New Category

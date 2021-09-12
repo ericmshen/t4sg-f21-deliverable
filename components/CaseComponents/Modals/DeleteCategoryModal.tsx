@@ -40,10 +40,10 @@ type DeleteCaseModalProps = {
 
 const DeleteCategoryMutation = `
 mutation DeleteCategoryMutation($id: bigint!) {
-    delete_category_by_pk(id: $id) {
-      id
-    }
-  }  
+  delete_category_by_pk(id: $id) {
+    id
+  }
+}  
 `;
 
 const AddCategoryModal: React.FC<DeleteCaseModalProps> = (props) => {
@@ -58,11 +58,11 @@ const AddCategoryModal: React.FC<DeleteCaseModalProps> = (props) => {
   return (
     <div>
       {showAlert ?
-      <Alert variant="success" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
+      <Alert variant="success" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", left: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
         <Alert.Heading>Successfully deleted category!</Alert.Heading>
         <CloseIcon style={{width: "30px", height: "30px", cursor: "pointer"}} onClick={() => setShowAlert(false)}/>
       </Alert>
-    : <div></div> }
+    : null }
     <StyledModal open={props.open} onClose={props.onClose}>
       <Typography variant="h4" align="center">
         Delete Category

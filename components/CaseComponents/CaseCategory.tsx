@@ -45,6 +45,7 @@ const CaseCategory = (props: CaseCategoryProps) => {
         width: "100%", 
         borderStyle: "solid", 
         borderColor: `${borderColor}`, 
+        borderRadius: "0.4rem",
         padding: "0.75rem", 
         backgroundColor: `${backgroundColor}`, 
         transitionDuration: "0.25s"

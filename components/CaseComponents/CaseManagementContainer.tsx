@@ -9,8 +9,10 @@ import AddCaseModal from "./Modals/AddCaseModal";
 import { useQuery } from "urql";
 import AddCategoryModal from "./Modals/AddCategoryModal";
 import DeleteCategoryModal from "./Modals/DeleteCategoryModal";
-import Image from 'next/image'
+import Image from 'next/image';
+import Alert from 'react-bootstrap/Alert';
 import { Category } from "@material-ui/icons";
+import CloseIcon from "@material-ui/icons/Close";
 
 /* 
   FEATURE 1 TODO:
@@ -48,8 +50,17 @@ const CaseManagementContainer: React.FC = (props) => {
     query: ManagementContainerQuery,
   });
 
+  const [showAlert, setShowAlert] = React.useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = React.useState<string>("");
+
   return (
     <>
+      { showAlert ? 
+      <Alert variant="warning" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", left: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
+        <Alert.Heading>{alertMessage}</Alert.Heading>
+        <CloseIcon style={{width: "30px", height: "30px", cursor: "pointer"}} onClick={() => setShowAlert(false)}/>
+      </Alert>
+    : null}
       <div style={{
           display: "flex",
           justifyContent: "center",
@@ -132,10 +143,16 @@ const CaseManagementContainer: React.FC = (props) => {
         <Button variant="outline-dark" onClick={() => setAddCaseModalOpen(true)}>
           Add Case
         </Button>
-        <Button variant="outline-dark" onClick={() => "redirect"}>
+        <Button variant="outline-dark" onClick={() => {
+          setAlertMessage("TODO. Click the X buttons on each case.");
+          setShowAlert(true);
+        }}>
           Delete Case
         </Button>
-        <Button variant="outline-dark" onClick={() => "redirect"}>
+        <Button variant="outline-dark" onClick={() => {
+          setAlertMessage("TODO.");
+          setShowAlert(true);
+        }}>
           Edit Case
         </Button>
       <Footer />
