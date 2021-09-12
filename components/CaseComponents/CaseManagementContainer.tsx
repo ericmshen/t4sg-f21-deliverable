@@ -45,8 +45,6 @@ const CaseManagementContainer: React.FC = (props) => {
     query: ManagementContainerQuery,
   });
 
-  const categories: ManagementCategory[] | null = data ? data?.category : null;
-
   return (
     <>
       <div style={{
@@ -81,13 +79,13 @@ const CaseManagementContainer: React.FC = (props) => {
           <p style={{width: "100%", margin: "auto", textAlign: "center", color: "red"}}>
             There was an error: {error.message}
           </p>) : 
-        categories ? (
-          categories.map((c : any) => {
-              return <Grid item xs={4} key={c.id}>
-                <CaseCategory category_id={c.id}></CaseCategory>
-              </Grid>
-            })
-          ) 
+        data ? (
+          data.category.map((c : any) => {
+            return <Grid item xs={4} key={c.id}>
+              <CaseCategory category_id={c.id}></CaseCategory>
+            </Grid>
+          })
+        ) 
         : (
           <p style={{width: "100%", margin: "auto", textAlign: "center", color: "red"}}>Something went wrong</p>
         )}
@@ -110,7 +108,7 @@ const CaseManagementContainer: React.FC = (props) => {
           width: "100%",
           borderStyle: "solid",
           padding: "0.75rem",
-          marginTop: "0.75rem",
+          marginTop: "2rem",
           marginBottom: "100px",
           display: "flex",
           justifyContent: "space-around",

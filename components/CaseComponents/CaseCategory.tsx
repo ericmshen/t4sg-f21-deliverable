@@ -32,14 +32,15 @@ const CaseCategory = (props: CaseCategoryProps) => {
     query: CategoryQuery,
     variables: { category_id },
   });
-  const [backgroundColor, setBackgroundColor] = React.useState<string>("f5f5f5");
+  const [backgroundColor, setBackgroundColor] = React.useState<string>("#f5f5f5");
+  const [borderColor, setBorderColor] = React.useState<string>("#444");
   const category: CaseCategoryData | null = data ? data?.category[0] : null;
 
   return (
     <Container
-      style={{ width: "100%", borderStyle: "solid", padding: "0.75rem", backgroundColor: `${backgroundColor}` }}
-      onMouseOver = {() => setBackgroundColor("#dbffea")}
-      onMouseLeave = {() => setBackgroundColor("#f5f5f5")}
+      style={{ width: "100%", borderStyle: "solid", borderColor: `${borderColor}`, padding: "0.75rem", backgroundColor: `${backgroundColor}`, transitionDuration: "0.25s"}}
+      onMouseOver = {() => {setBackgroundColor("#dbffea"); setBorderColor("#7ae0ad")}}
+      onMouseLeave = {() => {setBackgroundColor("#f5f5f5"); setBorderColor("#444")}}
     >
       <Row>
         <Col>
