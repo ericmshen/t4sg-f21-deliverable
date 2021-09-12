@@ -19,9 +19,6 @@ type DatabaseDemoProps = {
 
 function DatabaseDemo(props : DatabaseDemoProps) {
     const [{data, fetching, error}, executeQuery] = useQuery({query: NamesQuery}); 
-    if(error) {
-        console.log(error);
-    }
     return (
         <div className={styles.container}>
         <Head>

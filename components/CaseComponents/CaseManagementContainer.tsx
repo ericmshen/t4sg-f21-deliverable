@@ -45,11 +45,7 @@ const CaseManagementContainer: React.FC = (props) => {
     query: ManagementContainerQuery,
   });
 
-  // const categories: ManagementCategory[] | null = data ? data?.category : null;
-
-  if(error) {
-    console.log(error);
-  }
+  const categories: ManagementCategory[] | null = data ? data?.category : null;
 
   return (
     <>
@@ -65,32 +61,36 @@ const CaseManagementContainer: React.FC = (props) => {
           height={68}
         />
       </div>
-      <h4 className="title">Home Page</h4>
+      <h2 className="title">Home Page</h2>
       <br></br>
 
       {/* CaseCategories */}
-      <Grid container spacing={3}>
-        {/*
-          FEATURE 1 TODO:
-          Use the data from the result of the query to render 
-          a CaseCategory for every category in the response.
-          Remember, the response is stored in the "data" variable!
-        */}
+      {/*
+        FEATURE 1 TODO:
+        Use the data from the result of the query to render 
+        a CaseCategory for every category in the response.
+        Remember, the response is stored in the "data" variable!
+      */}
 
-        <div>
-        {fetching ? <p style={{marginLeft: "46vw"}}>Getting your data...</p> : error ? "There was an error" + error.message : data ? data?.category.map((c : any) => {
-          <Grid item xs={4}>
-            <CaseCategory category_id={c.id}></CaseCategory>
-          </Grid>
-        }) : "Something went wrong"}
-        </div>
-
-        {/* {categories?.map((c) => {
-          <Grid item xs={4}>
-            <CaseCategory category_id={c.id}></CaseCategory>
-          </Grid>
-        })} */}
-
+      <Grid container spacing={3} style={{paddingLeft: "2vw", paddingRight: "2vw"}}>
+      {fetching ? (
+        <p style={{width: "100%", margin: "auto", textAlign: "center"}}>
+          Getting your data...
+        </p>) :
+        error ? (
+          <p style={{width: "100%", margin: "auto", textAlign: "center", color: "red"}}>
+            There was an error: {error.message}
+          </p>) : 
+        categories ? (
+          categories.map((c : any) => {
+              return <Grid item xs={4} key={c.id}>
+                <CaseCategory category_id={c.id}></CaseCategory>
+              </Grid>
+            })
+          ) 
+        : (
+          <p style={{width: "100%", margin: "auto", textAlign: "center", color: "red"}}>Something went wrong</p>
+        )}
       </Grid>
 
       {/* Popup modals for adding cases/categories */}
@@ -111,6 +111,7 @@ const CaseManagementContainer: React.FC = (props) => {
           borderStyle: "solid",
           padding: "0.75rem",
           marginTop: "0.75rem",
+          marginBottom: "100px",
           display: "flex",
           justifyContent: "space-around",
         }}
