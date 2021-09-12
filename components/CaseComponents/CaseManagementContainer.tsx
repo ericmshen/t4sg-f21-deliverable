@@ -8,6 +8,7 @@ import CaseCategory from "./CaseCategory";
 import AddCaseModal from "./Modals/AddCaseModal";
 import { useQuery } from "urql";
 import AddCategoryModal from "./Modals/AddCategoryModal";
+import DeleteCategoryModal from "./Modals/DeleteCategoryModal";
 import Image from 'next/image'
 import { Category } from "@material-ui/icons";
 
@@ -38,6 +39,8 @@ const CaseManagementContainer: React.FC = (props) => {
   const [addCaseModalOpen, setAddCaseModalOpen] =
     React.useState<boolean>(false);
   const [addCategoryModalOpen, setAddCategoryModalOpen] =
+    React.useState<boolean>(false);
+  const [deleteCategoryModalOpen, setDeleteCategoryModalOpen] =
     React.useState<boolean>(false);
 
   /* NOTE: This uses the query defined above in feature 1. */
@@ -92,14 +95,20 @@ const CaseManagementContainer: React.FC = (props) => {
       </Grid>
 
       {/* Popup modals for adding cases/categories */}
-      <AddCaseModal
-        onClose={() => setAddCaseModalOpen(false)}
-        open={addCaseModalOpen}
-      />
 
       <AddCategoryModal
         onClose={() => setAddCategoryModalOpen(false)}
         open={addCategoryModalOpen}
+      />
+
+      <DeleteCategoryModal
+        onClose={() => setDeleteCategoryModalOpen(false)}
+        open={deleteCategoryModalOpen}
+      />
+
+      <AddCaseModal
+        onClose={() => setAddCaseModalOpen(false)}
+        open={addCaseModalOpen}
       />
 
       {/* Commands */}
@@ -117,7 +126,7 @@ const CaseManagementContainer: React.FC = (props) => {
         <Button variant="outline-dark" onClick={() => setAddCategoryModalOpen(true)}>
           Add Category
         </Button>
-        <Button variant="outline-dark" onClick={() => "redirect"}>
+        <Button variant="outline-dark" onClick={() => setDeleteCategoryModalOpen(true)}>
           Delete Category
         </Button>
         <Button variant="outline-dark" onClick={() => setAddCaseModalOpen(true)}>

@@ -10,12 +10,14 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import Alert from 'react-bootstrap/Alert'
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { useMutation, useQuery } from "urql";
 import {
   ManagementCategory,
   ManagementContainerQuery,
 } from "../CaseManagementContainer";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,8 +47,8 @@ type AddCaseModalProps = {
   in this variable 
 */
 const InsertCaseMutation = `
-mutation InsertCaseMutation($id: bigint!, $name: String = "", $description: String = "", $status: String = "", $category_id: Int!) {
-  insert_cases_one(object: {id: $id, name: $name, description: $description, status: $status, category_id: $category_id}) {
+mutation InsertCaseMutation($name: String = "", $description: String = "", $status: String = "", $category_id: Int!) {
+  insert_cases_one(object: {name: $name, description: $description, status: $status, category_id: $category_id}) {
     id
     name
     description
@@ -62,6 +64,7 @@ const AddCaseModal: React.FC<AddCaseModalProps> = (props) => {
   const [description, setDescription] = useState<string>("");
   const [status, setStatus] = useState<string | null>(null);
   const [category, setCategory] = useState<number | null>(null);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
   const [{ data, fetching, error }, executeQuery] = useQuery({
     query: ManagementContainerQuery,
   });
@@ -69,6 +72,13 @@ const AddCaseModal: React.FC<AddCaseModalProps> = (props) => {
   const [result, executeMutation] = useMutation(InsertCaseMutation);
 
   return (
+    <div>
+    {showAlert ?
+      <Alert variant="success" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
+        <Alert.Heading>Successfully added case!</Alert.Heading>
+        <CloseIcon style={{width: "30px", height: "30px", cursor: "pointer"}} onClick={() => setShowAlert(false)}/>
+      </Alert>
+    : <div></div> }
     <StyledModal open={props.open} onClose={props.onClose}>
       <Typography variant="h4" align="center">
         Add New Case
@@ -156,6 +166,8 @@ const AddCaseModal: React.FC<AddCaseModalProps> = (props) => {
               name,
               status,
               category_id: category,
+            }).then(() => {
+              setShowAlert(true);
             });
             props.onClose();
           }}
@@ -164,6 +176,7 @@ const AddCaseModal: React.FC<AddCaseModalProps> = (props) => {
         </Button>
       </Box>
     </StyledModal>
+    </div>
   );
 };
 export default AddCaseModal;

@@ -33,77 +33,69 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type AddCaseModalProps = {
+type DeleteCaseModalProps = {
   open: boolean;
   onClose: () => void;
 };
 
-const InsertCategoryMutation = `
-mutation AddCategoryMutation($description: String = "", $name: String = "") {
-    insert_category_one(object: {description: $description, name: $name}) {
+const DeleteCategoryMutation = `
+mutation DeleteCategoryMutation($id: bigint!) {
+    delete_category_by_pk(id: $id) {
       id
-      name
-      description
     }
   }  
 `;
 
-const AddCategoryModal: React.FC<AddCaseModalProps> = (props) => {
+const AddCategoryModal: React.FC<DeleteCaseModalProps> = (props) => {
   const classes = useStyles();
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [id, setId] = useState<number>(-1);
+  const [result, executeMutation] = useMutation(DeleteCategoryMutation);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [result, executeMutation] = useMutation(InsertCategoryMutation);
+  const [{ data, fetching, error }, executeQuery] = useQuery({
+    query: ManagementContainerQuery,
+  });
 
   return (
     <div>
       {showAlert ?
       <Alert variant="success" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
-        <Alert.Heading>Successfully added category!</Alert.Heading>
+        <Alert.Heading>Successfully deleted category!</Alert.Heading>
         <CloseIcon style={{width: "30px", height: "30px", cursor: "pointer"}} onClick={() => setShowAlert(false)}/>
       </Alert>
     : <div></div> }
     <StyledModal open={props.open} onClose={props.onClose}>
       <Typography variant="h4" align="center">
-        Add New Category
+        Delete Category
       </Typography>
-      <Box>
-        <TextField
-          id="standard-full-width"
-          label="Name"
-          placeholder="Example Category Name"
-          fullWidth
-          margin="normal"
-          value={name}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setName(event.target.value);
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="standard-full-width"
-          label="Description"
-          placeholder="Example Category Description"
-          fullWidth
-          margin="normal"
-          value={description}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setDescription(event.target.value);
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </Box>
+      {data ? (
+          <FormControl fullWidth>
+            <InputLabel id="category-select-label">Category Name</InputLabel>
+            <Select
+              labelId="category-select-label"
+              fullWidth
+              value={id}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setId(event.target.value as number);
+              }}
+            >
+
+            {data.category.map((c: any) => {
+              return <MenuItem key={c.id} value={c.id}>
+                {c.name}
+              </MenuItem>
+            })}
+
+            </Select>
+          </FormControl>
+        ) : fetching ? (
+          "Loading Categories"
+        ) : null}
       <Box mt="10px" display="flex" justifyContent="center">
         <Button
           variant="outlined"
           onClick={() => {
             executeMutation({
-              description,
-              name,
+              id
             }).then(() => {
               setShowAlert(true);
             });
