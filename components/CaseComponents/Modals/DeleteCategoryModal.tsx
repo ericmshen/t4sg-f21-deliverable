@@ -67,6 +67,8 @@ const AddCategoryModal: React.FC<DeleteCaseModalProps> = (props) => {
       <Typography variant="h4" align="center">
         Delete Category
       </Typography>
+      <br></br>
+      <Box>
       {data ? (
           <FormControl fullWidth>
             <InputLabel id="category-select-label">Category Name</InputLabel>
@@ -90,6 +92,7 @@ const AddCategoryModal: React.FC<DeleteCaseModalProps> = (props) => {
         ) : fetching ? (
           "Loading Categories"
         ) : null}
+      </Box>
       <Box mt="10px" display="flex" justifyContent="center">
         <Button
           variant="outlined"

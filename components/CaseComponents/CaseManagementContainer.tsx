@@ -56,7 +56,7 @@ const CaseManagementContainer: React.FC = (props) => {
   return (
     <>
       { showAlert ? 
-      <Alert variant="warning" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", left: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
+      <Alert variant="danger" onClose={() => setShowAlert(false)} style={{position: "fixed", top: "0", left: "0", width: "100%", display: "flex", justifyContent: "space-between"}}>
         <Alert.Heading>{alertMessage}</Alert.Heading>
         <CloseIcon style={{width: "30px", height: "30px", cursor: "pointer"}} onClick={() => setShowAlert(false)}/>
       </Alert>
