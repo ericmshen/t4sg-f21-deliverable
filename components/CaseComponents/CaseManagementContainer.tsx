@@ -67,7 +67,7 @@ const CaseManagementContainer: React.FC = (props) => {
           marginTop: "1em",
         }}>
         <Image
-          src="/../public/t4sg_logo.png"
+          src="/../public/logo.png"
           alt="T4SG Logo"
           width={180}
           height={68}
